@@ -30,41 +30,32 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 Write-Host "Limpeza de arquivos temporários e remoção da pasta windows.old concluídas."
 
-# Limpeza de arquivos temporários do Windows
 
-# Função para calcular o tamanho de uma pasta
-function Get-FolderSize($folder) {
-    $size = 0
-    Get-ChildItem $folder -Recurse | ForEach-Object { $size += $_.Length }
-    return $size
-}
+Write-Host "Limpando arquivos temporários do usuário...."
+rmdir /s /q %TEMP%
+rmdir /s /q %TMP%
 
-# Limpeza de arquivos temporários do usuário
-$env:TEMP | Remove-Item -Force -Recurse
-$env:TMP | Remove-Item -Force -Recurse
+Write-Host "Limpando arquivos temporários do sistema......"
+rmdir /s /q %SystemRoot%\Temp
 
-# Limpeza de arquivos temporários do sistema
-$windowsTemp = [System.IO.Path]::Combine($env:SystemRoot, 'Temp')
-$windowsTemp | Remove-Item -Force -Recurse
+Write-Host "Limpando arquivos de logs do sistema......"
+rmdir /s /q %SystemRoot%\Logs
 
-# Limpeza de arquivos de logs do sistema
-$windowsLogs = [System.IO.Path]::Combine($env:SystemRoot, 'Logs')
-$windowsLogs | Remove-Item -Force -Recurse
+Write-Host "Limpando arquivos de cache do sistema......."
+rmdir /s /q %SystemRoot%\CSC
 
-# Limpeza de arquivos de cache do sistema
-$windowsCSC = [System.IO.Path]::Combine($env:SystemRoot, 'CSC')
-$windowsCSC | Remove-Item -Force -Recurse
+Write-Host "Esvaziando a Lixeira......"
+rd /s /q C:\$Recycle.Bin
 
-# Limpeza da lixeira
-Clear-RecycleBin -Force
+Write-Host "Mostrando espaço livre antes da limpeza......."
+fsutil volume diskfree C:
 
-# Mostrar espaço livre antes e depois da limpeza
-$initialFreeSpace = (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -eq "C:\" }).Free
-Write-Host "Espaço livre inicial: $initialFreeSpace bytes"
+Write-Host "5555555 segundos...."
+timeout /t 5 /nobreak >nul
 
-# Aguardar 5 segundos antes de verificar o espaço livre novamente
-Start-Sleep -Seconds 5
+Write-Host "Mostrando espaço livre após a limpeza......"
 
-$finalFreeSpace = (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -eq "C:\" }).Free
-Write-Host "Espaço livre após a limpeza: $finalFreeSpace bytes"
+fsutil volume diskfree C:
+
+
 
