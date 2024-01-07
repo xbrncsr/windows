@@ -65,13 +65,17 @@ if (-not $isAdmin) {
     exit
 }
 
-# Limpeza do disco usando Cleanmgr
+# Limpeza do disco usando Cleanmgr com o parâmetro /LOWDISK
 Write-Host "Realizando limpeza do disco..."
-Start-Process cleanmgr -ArgumentList "/lowdisk" -Wait
+Start-Process cleanmgr -ArgumentList "/LOWDISK" -Wait
 
 # Remoção do diretório Windows.old
 Write-Host "Removendo o diretório Windows.old..."
 Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
 
+# Limpeza de arquivos de otimização de entrega
+Write-Host "Limpando arquivos de otimização de entrega..."
+Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache" -Recurse -Force -ErrorAction SilentlyContinue
 
 Write-Host "Limpeza concluída com sucesso!"
