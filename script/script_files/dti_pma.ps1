@@ -1,8 +1,4 @@
-##########
-# Win10 Initial Setup Script
-# Author: cesarbrunoms <bruno.cesar@outlook.it>
-# Version: 5.0.2, 2023-01-28
-##########
+
 
 # Ask for elevated permissions if required
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
@@ -12,81 +8,52 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
-# SFC
-sfc /scannow
-
 # DISM
 DISM /Online /Cleanup-image /Restorehealth
+
+# SFC
+sfc /scannow
 
 # defrag
 Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose  
 
+#flushdns
+ipconfig /flushdns
+
+#release
+ipconfig /release
+
+#renew
+ipconfig /renew
 
 
+# Script para limpeza de arquivos temporários e remoção da pasta windows.old no Windows 11
+# Caminhos para pastas de arquivos temporários
+$windowsTempPath = [System.IO.Path]::Combine($env:SystemRoot, 'Temp')
+$userTempPath = [System.IO.Path]::Combine($env:TEMP)
 
+# Caminho para a pasta windows.old
+$windowsOldPath = [System.IO.Path]::Combine($env:SystemDrive, 'windows.old')
 
-# NOVO
-# Windows Cleanup Script
-
-# Verifica se está sendo executado como administrador
-$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-    Start-Process powershell -Verb RunAs -ArgumentList ($MyInvocation.MyCommand.Definition + " am_admin")
-    exit
+# Função para limpar arquivos em uma pasta
+function LimparTempFolder($folderPath) {
+    Get-ChildItem -Path $folderPath | Remove-Item -Force -Recurse
 }
 
-# Limpeza do disco usando PowerShell
-Write-Host "Realizando limpeza do disco..."
-
-# Função para limpar uma pasta
-function Clear-Folder($path) {
-    if (Test-Path $path) {
-        Get-ChildItem -Path $path | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+# Função para limpar a pasta windows.old
+function LimparWindowsOldFolder($folderPath) {
+    if (Test-Path $folderPath) {
+        Remove-Item -Path $folderPath -Recurse -Force
     }
 }
 
-# Limpeza de arquivos temporários
-Clear-Folder "$env:TEMP"
+# Limpar arquivos na pasta de arquivos temporários do Windows
+LimparTempFolder $windowsTempPath
 
-# Limpeza de arquivos de otimização de entrega
-Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download"
-Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+# Limpar arquivos na pasta de arquivos temporários do usuário
+LimparTempFolder $userTempPath
 
-# Remoção do diretório Windows.old
-Write-Host "Removendo o diretório Windows.old..."
-Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
+# Limpar a pasta windows.old
+LimparWindowsOldFolder $windowsOldPath
 
-Write-Host "Limpeza concluída com sucesso!"
-
-
-# xxxxxxxxxxxxxxxxx
-# Script de Limpeza Completa para o Windows 11
-
-# Função para limpar a pasta especificada
-function LimparPasta($caminho) {
-    Get-ChildItem $caminho -Recurse | Remove-Item -Force -ErrorAction SilentlyContinue
-}
-
-# Limpar arquivos temporários do Windows
-Write-Host "Limpando arquivos temporários..."
-LimparPasta "C:\Windows\Temp"
-
-# Limpar Lixeira
-Write-Host "Limpando Lixeira..."
-Clear-RecycleBin -Force
-
-# Limpar logs de eventos antigos
-Write-Host "Limpando logs de eventos antigos..."
-wevtutil el | ForEach-Object {wevtutil cl $_}
-
-# Limpar cache de thumbnails
-Write-Host "Limpando cache de thumbnails..."
-LimparPasta "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Explorer"
-
-# Limpar cache de atualizações do Windows
-Write-Host "Limpando cache de atualizações do Windows..."
-net stop wuauserv
-Remove-Item "$env:SystemRoot\SoftwareDistribution\Download" -Force -Recurse -ErrorAction SilentlyContinue
-net start wuauserv
-
-Write-Host "Limpeza concluída."
+Write-Host "Limpeza de arquivos temporários e remoção da pasta windows.old concluídas."
