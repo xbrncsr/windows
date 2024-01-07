@@ -60,49 +60,37 @@ Write-Host "Limpeza concluída com sucesso!"
 
 
 # xxxxxxxxxxxxxxxxx
-# Lixeira (Recycle Bin)
-Remove-Item -Path "C:\$Recycle.Bin\*" -Force -Recurse
+# Desativar temporariamente o Storage Sense para evitar conflitos
+Disable-StorageSense -ExecutionPolicy Bypass -Force
 
-# Pasta Temp dos Usuários (User Temp Folder)
+# Limpar lixeira
+Clear-RecycleBin -Force
+
+# Limpar arquivos temporários de usuários
 Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
     Remove-Item -Path "$($_.FullName)\AppData\Local\Temp\*" -Force -Recurse
-    New-Item -Path "$($_.FullName)\AppData\Local\Temp\vazio.txt" -ItemType File | Out-Null
-    Move-Item -Path "$($_.FullName)\AppData\Local\Temp\*" -Destination "$($_.FullName)\AppData\Local\Temp\" -Force
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Temp\vazio.txt" -Force
 }
 
-# Windows Temp
+# Limpar a pasta Temp do Windows
 Remove-Item -Path "C:\Windows\Temp\*" -Force -Recurse
-New-Item -Path "C:\Windows\Temp\vazio.txt" -ItemType File | Out-Null
-Move-Item -Path "C:\Windows\Temp\*" -Destination "C:\Windows\Temp\" -Force
-Remove-Item -Path "C:\Windows\Temp\vazio.txt" -Force
 
-# Arquivos de Log do Windows (Windows Log Files)
-Remove-Item -Path "C:\windows\logs\cbs\*.log" -Force
+# Limpar arquivos de log
+Remove-Item -Path "C:\Windows\Logs\CBS\*.log" -Force
 Remove-Item -Path "C:\Windows\Logs\MoSetup\*.log" -Force
 Remove-Item -Path "C:\Windows\Panther\*.log" -Force -Recurse
 Remove-Item -Path "C:\Windows\inf\*.log" -Force -Recurse
-Remove-Item -Path "C:\Windows\logs\*.log" -Force -Recurse
+Remove-Item -Path "C:\Windows\Logs\*.log" -Force -Recurse
 Remove-Item -Path "C:\Windows\SoftwareDistribution\*.log" -Force -Recurse
 Remove-Item -Path "C:\Windows\Microsoft.NET\*.log" -Force -Recurse
 
-Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\OneDrive\setup\logs\*.log" -Force -Recurse
-}
+# Limpar arquivos de cache do Internet Explorer
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Force -Recurse
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.dat" -Force -Recurse
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.js" -Force -Recurse
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.htm" -Force -Recurse
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.txt" -Force -Recurse
+Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.jpg" -Force -Recurse
 
-# Arquivos de Log do Windows e IE (Windows and Internet Explorer Log Files)
-Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\Explorer\*.db" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\WebCache\*.log" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\SettingSync\*.log" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\Explorer\ThumbCacheToDelete\*.tmp" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Terminal Server Client\Cache\*.bin" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.dat" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.js" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.htm" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.txt" -Force -Recurse
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.jpg" -Force -Recurse
-    Move-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Destination "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\" -Force
-}
+# Ativar o Storage Sense de volta
+Enable-StorageSense -ExecutionPolicy Bypass -Force
 
