@@ -69,14 +69,24 @@ if (-not $isAdmin) {
     exit
 }
 
-# Limpeza do disco usando PowerShell e o módulo Storage
+# Limpeza do disco usando PowerShell e WMI
 Write-Host "Realizando limpeza do disco..."
 
-# Carrega o módulo Storage
-Import-Module Storage
+# Obter a classe Win32_DiskCleanup
+$diskCleanup = Get-CimClass -Namespace root/cimv2 -ClassName Win32_DiskCleanup
 
-# Executa a limpeza automática do disco
-Clear-Volume -DriveLetter C -FreeSpaceThreshold 2GB -Confirm:$false
+# Criar uma instância da classe
+$instance = $diskCleanup.CreateInstance()
+
+# Configurar todas as opções para verdadeiro
+foreach ($property in $diskCleanup.CimClassProperties) {
+    if ($property.Name -ne 'Name' -and $property.Name -ne 'Description') {
+        $instance[$property.Name] = $true
+    }
+}
+
+# Executar o método RunNow
+$result = $diskCleanup.CimClassMethods['RunNow'].Invoke($instance)
 
 # Remoção do diretório Windows.old
 Write-Host "Removendo o diretório Windows.old..."
