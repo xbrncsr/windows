@@ -14,46 +14,57 @@ DISM /Online /Cleanup-image /Restorehealth
 # SFC
 sfc /scannow
 
-# defrag
-Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose  
+
 
 #flushdns
-ipconfig /flushdns
+#ipconfig /flushdns
 
 #release
-ipconfig /release
+#ipconfig /release
 
 #renew
-ipconfig /renew
+#ipconfig /renew
 
-
-# Script para limpeza de arquivos temporários e remoção da pasta windows.old no Windows 11
-# Caminhos para pastas de arquivos temporários
-$windowsTempPath = [System.IO.Path]::Combine($env:SystemRoot, 'Temp')
-$userTempPath = [System.IO.Path]::Combine($env:TEMP)
-
-# Caminho para a pasta windows.old
-$windowsOldPath = [System.IO.Path]::Combine($env:SystemDrive, 'windows.old')
-
-# Função para limpar arquivos em uma pasta
-function LimparTempFolder($folderPath) {
-    Get-ChildItem -Path $folderPath | Remove-Item -Force -Recurse
-}
-
-# Função para limpar a pasta windows.old
-function LimparWindowsOldFolder($folderPath) {
-    if (Test-Path $folderPath) {
-        Remove-Item -Path $folderPath -Recurse -Force
-    }
-}
-
-# Limpar arquivos na pasta de arquivos temporários do Windows
-LimparTempFolder $windowsTempPath
-
-# Limpar arquivos na pasta de arquivos temporários do usuário
-LimparTempFolder $userTempPath
-
-# Limpar a pasta windows.old
-LimparWindowsOldFolder $windowsOldPath
+# defrag
+#Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose
 
 Write-Host "Limpeza de arquivos temporários e remoção da pasta windows.old concluídas."
+
+# Limpeza de arquivos temporários do Windows
+
+# Função para calcular o tamanho de uma pasta
+function Get-FolderSize($folder) {
+    $size = 0
+    Get-ChildItem $folder -Recurse | ForEach-Object { $size += $_.Length }
+    return $size
+}
+
+# Limpeza de arquivos temporários do usuário
+$env:TEMP | Remove-Item -Force -Recurse
+$env:TMP | Remove-Item -Force -Recurse
+
+# Limpeza de arquivos temporários do sistema
+$windowsTemp = [System.IO.Path]::Combine($env:SystemRoot, 'Temp')
+$windowsTemp | Remove-Item -Force -Recurse
+
+# Limpeza de arquivos de logs do sistema
+$windowsLogs = [System.IO.Path]::Combine($env:SystemRoot, 'Logs')
+$windowsLogs | Remove-Item -Force -Recurse
+
+# Limpeza de arquivos de cache do sistema
+$windowsCSC = [System.IO.Path]::Combine($env:SystemRoot, 'CSC')
+$windowsCSC | Remove-Item -Force -Recurse
+
+# Limpeza da lixeira
+Clear-RecycleBin -Force
+
+# Mostrar espaço livre antes e depois da limpeza
+$initialFreeSpace = (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -eq "C:\" }).Free
+Write-Host "Espaço livre inicial: $initialFreeSpace bytes"
+
+# Aguardar 5 segundos antes de verificar o espaço livre novamente
+Start-Sleep -Seconds 5
+
+$finalFreeSpace = (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -eq "C:\" }).Free
+Write-Host "Espaço livre após a limpeza: $finalFreeSpace bytes"
+
