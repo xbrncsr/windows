@@ -58,3 +58,42 @@ Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
 
 Write-Host "Limpeza concluída com sucesso!"
 
+
+# xxxxxxxxxxxxxxxxx
+# Windows Cleanup Script
+
+# Verifica se está sendo executado como administrador
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Start-Process powershell -Verb RunAs -ArgumentList ($MyInvocation.MyCommand.Definition + " am_admin")
+    exit
+}
+
+# Função para limpar uma pasta
+function Clear-Folder($path) {
+    if (Test-Path $path) {
+        Get-ChildItem -Path $path | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+    }
+}
+
+# Limpeza do disco usando PowerShell
+Write-Host "Realizando limpeza do disco..."
+
+# Limpeza de arquivos temporários
+Clear-Folder "$env:TEMP"
+Clear-Folder "$env:SystemRoot\Temp"
+
+# Limpeza de caches do sistema
+Clear-Folder "$env:SystemRoot\SoftwareDistribution\Download"
+Clear-Folder "$env:SystemRoot\WinSxS\Temp"
+
+# Limpeza de arquivos de otimização de entrega
+Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download"
+Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+
+# Remoção do diretório Windows.old
+Write-Host "Removendo o diretório Windows.old..."
+Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
+
+Write-Host "Limpeza concluída com sucesso!"
+
