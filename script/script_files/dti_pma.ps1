@@ -1,3 +1,27 @@
+##########
+# Win10 Initial Setup Script
+# Author: cesarbrunoms <bruno.cesar@outlook.it>
+# Version: 5.0.2, 2023-01-28
+##########
+
+# Ask for elevated permissions if required
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+	# Enable execution script PowerShell
+	Start-Process powershell.exe "-command set-ExecutionPolicy unrestricted"
+	Exit
+}
+
+# SFC
+sfc /scannow
+
+# DISM
+DISM /Online /Cleanup-image /Restorehealth
+
+# defrag
+Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose  
+
+# limpeza
 @echo off
 echo ===============================================================
 echo    Windows Cleanup Script
@@ -14,10 +38,7 @@ if NOT "%1"=="am_admin" (
 :: Inicia a limpeza do disco
 echo Realizando limpeza do disco...
 echo.
-cleanmgr /sagerun:1
-
-:: Aguarda o processo de limpeza terminar
-timeout /t 10 /nobreak > nul
+cleanmgr /verylowdisk
 
 :: Remove o diretório Windows.old
 echo Removendo o diretório Windows.old...
