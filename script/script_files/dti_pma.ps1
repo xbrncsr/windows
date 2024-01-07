@@ -60,37 +60,33 @@ Write-Host "Limpeza concluída com sucesso!"
 
 
 # xxxxxxxxxxxxxxxxx
-# Desativar temporariamente o Storage Sense para evitar conflitos
-Disable-StorageSense -ExecutionPolicy Bypass -Force
+# Script de Limpeza Completa para o Windows 11
 
-# Limpar lixeira
-Clear-RecycleBin -Force
-
-# Limpar arquivos temporários de usuários
-Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
-    Remove-Item -Path "$($_.FullName)\AppData\Local\Temp\*" -Force -Recurse
+# Função para limpar a pasta especificada
+function LimparPasta($caminho) {
+    Get-ChildItem $caminho -Recurse | Remove-Item -Force -ErrorAction SilentlyContinue
 }
 
-# Limpar a pasta Temp do Windows
-Remove-Item -Path "C:\Windows\Temp\*" -Force -Recurse
+# Limpar arquivos temporários do Windows
+Write-Host "Limpando arquivos temporários..."
+LimparPasta "C:\Windows\Temp"
 
-# Limpar arquivos de log
-Remove-Item -Path "C:\Windows\Logs\CBS\*.log" -Force
-Remove-Item -Path "C:\Windows\Logs\MoSetup\*.log" -Force
-Remove-Item -Path "C:\Windows\Panther\*.log" -Force -Recurse
-Remove-Item -Path "C:\Windows\inf\*.log" -Force -Recurse
-Remove-Item -Path "C:\Windows\Logs\*.log" -Force -Recurse
-Remove-Item -Path "C:\Windows\SoftwareDistribution\*.log" -Force -Recurse
-Remove-Item -Path "C:\Windows\Microsoft.NET\*.log" -Force -Recurse
+# Limpar Lixeira
+Write-Host "Limpando Lixeira..."
+Clear-RecycleBin -Force
 
-# Limpar arquivos de cache do Internet Explorer
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Force -Recurse
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.dat" -Force -Recurse
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.js" -Force -Recurse
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.htm" -Force -Recurse
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.txt" -Force -Recurse
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Microsoft\Windows\INetCache\Low\*.jpg" -Force -Recurse
+# Limpar logs de eventos antigos
+Write-Host "Limpando logs de eventos antigos..."
+wevtutil el | ForEach-Object {wevtutil cl $_}
 
-# Ativar o Storage Sense de volta
-Enable-StorageSense -ExecutionPolicy Bypass -Force
+# Limpar cache de thumbnails
+Write-Host "Limpando cache de thumbnails..."
+LimparPasta "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Explorer"
 
+# Limpar cache de atualizações do Windows
+Write-Host "Limpando cache de atualizações do Windows..."
+net stop wuauserv
+Remove-Item "$env:SystemRoot\SoftwareDistribution\Download" -Force -Recurse -ErrorAction SilentlyContinue
+net start wuauserv
+
+Write-Host "Limpeza concluída."
