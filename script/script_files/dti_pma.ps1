@@ -60,41 +60,45 @@ Write-Host "Limpeza concluída com sucesso!"
 
 
 # xxxxxxxxxxxxxxxxx
-# Windows Cleanup Script
+# Windows Cleanup Script with UIAutomation
 
-# Verifica se está sendo executado como administrador
-$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-    Start-Process powershell -Verb RunAs -ArgumentList ($MyInvocation.MyCommand.Definition + " am_admin")
-    exit
+# Installa o módulo UIAutomation (se não estiver instalado)
+Install-Module -Name UIAutomation -Force -SkipPublisherCheck -Scope CurrentUser
+
+# Importa o módulo UIAutomation
+Import-Module UIAutomation
+
+# Função para clicar em um botão com base no texto do botão
+function Click-Button($window, $buttonText) {
+    $button = Get-UIAButton -Name $buttonText -Parent $window
+    if ($button -ne $null) {
+        Invoke-UIAButton -Button $button -Click
+        return $true
+    }
+    return $false
 }
 
-# Limpeza do disco usando PowerShell e WMI
+# Limpeza do disco usando PowerShell e UIAutomation
 Write-Host "Realizando limpeza do disco..."
 
-# Obter a classe Win32_DiskCleanup
-$diskCleanup = Get-CimClass -Namespace root/cimv2 -ClassName Win32_DiskCleanup
+# Executar cleanmgr.exe
+Start-Process cleanmgr -Wait
 
-# Criar uma instância da classe
-$instance = $diskCleanup.CreateInstance()
+# Aguardar a janela do Disk Cleanup aparecer
+Start-Sleep -Seconds 5
 
-# Configurar todas as opções para verdadeiro
-foreach ($property in $diskCleanup.CimClassProperties) {
-    if ($property.Name -ne 'Name' -and $property.Name -ne 'Description') {
-        $instance[$property.Name] = $true
+# Obter a janela principal do Disk Cleanup
+$diskCleanupWindow = Get-UIAWindow -Name "Disk Cleanup"
+
+if ($diskCleanupWindow -ne $null) {
+    # Clicar no botão "Clean up system files"
+    if (Click-Button -window $diskCleanupWindow -buttonText "Clean up system files") {
+        # Aguardar a janela atualizar com as novas opções
+        Start-Sleep -Seconds 5
+
+        # Clicar no botão "OK" para iniciar a limpeza
+        Click-Button -window $diskCleanupWindow -buttonText "OK"
     }
 }
-
-# Executar o método RunNow
-$result = $diskCleanup.CimClassMethods['RunNow'].Invoke($instance)
-
-# Remoção do diretório Windows.old
-Write-Host "Removendo o diretório Windows.old..."
-Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
-
-# Limpeza de arquivos de otimização de entrega
-Write-Host "Limpando arquivos de otimização de entrega..."
-Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache" -Recurse -Force -ErrorAction SilentlyContinue
 
 Write-Host "Limpeza concluída com sucesso!"
