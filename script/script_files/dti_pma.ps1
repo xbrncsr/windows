@@ -105,3 +105,4 @@ Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
     Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.jpg" -Force -Recurse
     Move-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Destination "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\" -Force
 }
+
