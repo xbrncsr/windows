@@ -23,6 +23,11 @@ timeout /t 10 /nobreak > nul
 echo Removendo o diretório Windows.old...
 rmdir /s /q C:\Windows.old
 
+:: Limpeza de arquivos de otimização de entrega
+echo Limpando arquivos de otimização de entrega...
+rmdir /s /q "%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download"
+rmdir /s /q "%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+
 echo Limpeza concluída com sucesso!
 echo.
 pause
