@@ -9,10 +9,10 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 }
 
 # DISM
-DISM /Online /Cleanup-image /Restorehealth
+#DISM /Online /Cleanup-image /Restorehealth
 
 # SFC
-sfc /scannow
+#sfc /scannow
 
 
 
