@@ -60,45 +60,48 @@ Write-Host "Limpeza concluída com sucesso!"
 
 
 # xxxxxxxxxxxxxxxxx
-# Windows Cleanup Script with UIAutomation
+# Lixeira (Recycle Bin)
+Remove-Item -Path "C:\$Recycle.Bin\*" -Force -Recurse
 
-# Installa o módulo UIAutomation (se não estiver instalado)
-Install-Module -Name UIAutomation -Force -SkipPublisherCheck -Scope CurrentUser
-
-# Importa o módulo UIAutomation
-Import-Module UIAutomation
-
-# Função para clicar em um botão com base no texto do botão
-function Click-Button($window, $buttonText) {
-    $button = Get-UIAButton -Name $buttonText -Parent $window
-    if ($button -ne $null) {
-        Invoke-UIAButton -Button $button -Click
-        return $true
-    }
-    return $false
+# Pasta Temp dos Usuários (User Temp Folder)
+Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Temp\*" -Force -Recurse
+    New-Item -Path "$($_.FullName)\AppData\Local\Temp\vazio.txt" -ItemType File | Out-Null
+    Move-Item -Path "$($_.FullName)\AppData\Local\Temp\*" -Destination "$($_.FullName)\AppData\Local\Temp\" -Force
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Temp\vazio.txt" -Force
 }
 
-# Limpeza do disco usando PowerShell e UIAutomation
-Write-Host "Realizando limpeza do disco..."
+# Windows Temp
+Remove-Item -Path "C:\Windows\Temp\*" -Force -Recurse
+New-Item -Path "C:\Windows\Temp\vazio.txt" -ItemType File | Out-Null
+Move-Item -Path "C:\Windows\Temp\*" -Destination "C:\Windows\Temp\" -Force
+Remove-Item -Path "C:\Windows\Temp\vazio.txt" -Force
 
-# Executar cleanmgr.exe
-Start-Process cleanmgr -Wait
+# Arquivos de Log do Windows (Windows Log Files)
+Remove-Item -Path "C:\windows\logs\cbs\*.log" -Force
+Remove-Item -Path "C:\Windows\Logs\MoSetup\*.log" -Force
+Remove-Item -Path "C:\Windows\Panther\*.log" -Force -Recurse
+Remove-Item -Path "C:\Windows\inf\*.log" -Force -Recurse
+Remove-Item -Path "C:\Windows\logs\*.log" -Force -Recurse
+Remove-Item -Path "C:\Windows\SoftwareDistribution\*.log" -Force -Recurse
+Remove-Item -Path "C:\Windows\Microsoft.NET\*.log" -Force -Recurse
 
-# Aguardar a janela do Disk Cleanup aparecer
-Start-Sleep -Seconds 5
-
-# Obter a janela principal do Disk Cleanup
-$diskCleanupWindow = Get-UIAWindow -Name "Disk Cleanup"
-
-if ($diskCleanupWindow -ne $null) {
-    # Clicar no botão "Clean up system files"
-    if (Click-Button -window $diskCleanupWindow -buttonText "Clean up system files") {
-        # Aguardar a janela atualizar com as novas opções
-        Start-Sleep -Seconds 5
-
-        # Clicar no botão "OK" para iniciar a limpeza
-        Click-Button -window $diskCleanupWindow -buttonText "OK"
-    }
+Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\OneDrive\setup\logs\*.log" -Force -Recurse
 }
 
-Write-Host "Limpeza concluída com sucesso!"
+# Arquivos de Log do Windows e IE (Windows and Internet Explorer Log Files)
+Get-ChildItem -Path "C:\Users\" -Directory | ForEach-Object {
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\Explorer\*.db" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\WebCache\*.log" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\SettingSync\*.log" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\Explorer\ThumbCacheToDelete\*.tmp" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Terminal Server Client\Cache\*.bin" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.dat" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.js" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.htm" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.txt" -Force -Recurse
+    Remove-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\Low\*.jpg" -Force -Recurse
+    Move-Item -Path "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\*" -Destination "$($_.FullName)\AppData\Local\Microsoft\Windows\INetCache\IE\" -Force
+}
