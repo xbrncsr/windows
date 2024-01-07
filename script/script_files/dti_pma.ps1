@@ -69,31 +69,22 @@ if (-not $isAdmin) {
     exit
 }
 
-# Função para limpar uma pasta
-function Clear-Folder($path) {
-    if (Test-Path $path) {
-        Get-ChildItem -Path $path | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-    }
-}
-
-# Limpeza do disco usando PowerShell
+# Limpeza do disco usando PowerShell e o módulo Storage
 Write-Host "Realizando limpeza do disco..."
 
-# Limpeza de arquivos temporários
-Clear-Folder "$env:TEMP"
-Clear-Folder "$env:SystemRoot\Temp"
+# Carrega o módulo Storage
+Import-Module Storage
 
-# Limpeza de caches do sistema
-Clear-Folder "$env:SystemRoot\SoftwareDistribution\Download"
-Clear-Folder "$env:SystemRoot\WinSxS\Temp"
-
-# Limpeza de arquivos de otimização de entrega
-Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download"
-Clear-Folder "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+# Executa a limpeza automática do disco
+Clear-Volume -DriveLetter C -FreeSpaceThreshold 2GB -Confirm:$false
 
 # Remoção do diretório Windows.old
 Write-Host "Removendo o diretório Windows.old..."
 Remove-Item -Path "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "Limpeza concluída com sucesso!"
+# Limpeza de arquivos de otimização de entrega
+Write-Host "Limpando arquivos de otimização de entrega..."
+Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Download" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache" -Recurse -Force -ErrorAction SilentlyContinue
 
+Write-Host "Limpeza concluída com sucesso!"
