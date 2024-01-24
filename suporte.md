@@ -1,6 +1,6 @@
 
 # Suporte
-## Contents
+## #️⃣ Contents
 * [1 - SCRIPTs](#1---script-dti-pma)
 * [1A - Enable execution script in powershell](#1a---enable-execution-script-powershell)
 * [1B - Show computer name and users](#1b---show-computer-name-and-users)
@@ -58,6 +58,7 @@ set-ExecutionPolicy unrestricted
 irm https://raw.githubusercontent.com/cesarbrunoms/scripts/main/win/dti_pma.ps1 | iex  
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -66,10 +67,11 @@ irm https://raw.githubusercontent.com/cesarbrunoms/scripts/main/win/dti_pma.ps1 
 Get-CimInstance -ClassName Win32_Desktop
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
-#### 1C - Desable Power Manage 
+#### 1C - Desable Power Manage
 ```shell
 powercfg.exe /SETACVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOIDLE 0
 powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOIDLE 0
@@ -79,6 +81,7 @@ powercfg.exe /SETACVALUEINDEX SCHEME_CURRENT SUB_SLEEP HIBERNATEIDLE 0
 powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_SLEEP HIBERNATEIDLE 0
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -98,10 +101,11 @@ $Trigger = New-ScheduledTaskTrigger -AtStartup
 Register-ScheduledTask -Action $TaskAction -Trigger $Trigger -TaskName "MyRestorePointTask" -Description "Tarefa para criar ponto de restauração ao iniciar o computador" -RunLevel Highest
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
-#### 1E - Add Credential 
+#### 1E - Add Credential
 ```shell
 $username = "padrao"
 $password = "123456"
@@ -109,6 +113,7 @@ $cmdkeyCommand = "cmdkey /add:192.168.0.34 /user:$username /pass:$password"
 Invoke-Expression -Command $cmdkeyCommand
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -118,6 +123,7 @@ Enable-LocalUser -Name "Administrador"
 Set-LocalUser -Name "Administrador" -Password (ConvertTo-SecureString -String "absemsau*" -AsPlainText -Force)
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -132,6 +138,7 @@ wmic useraccount where "name='user'" set passwordexpires=false
 net user user /passwordchg:no
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -143,6 +150,7 @@ Rename-Computer -NewName $RENAME
 -Restart  
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -157,6 +165,7 @@ chkdsk c: /r
 Repair-Volume C -OfflineScanAndFix
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -178,6 +187,7 @@ Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose
 Optimize-Volume -DriveLetter C -ReTrim -Verbose  
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -197,6 +207,7 @@ DISM /Online /Cleanup-image /Restorehealth
 Repair-WindowsImage -Online -StartComponentCleanup -RestoreHealth
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -210,6 +221,7 @@ gpupdate /force
 Invoke-Expression -Command "gpupdate /force"
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -228,6 +240,7 @@ Start-Service -Name Spooler
 Restart-Service -Name Spooler -Force  
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -255,6 +268,7 @@ NETSH interface set interface name=Ethernet admin=DISABLE
 NETSH interface set interface name=Ethernet admin=ENABLE  
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -289,6 +303,7 @@ net use \\srv-storage-01\semsau-atencao-basica$ /PERSISTENT:YES
 net use \\srv-storage-01\semsau-visa$ /PERSISTENT:YES
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -297,6 +312,7 @@ net use \\srv-storage-01\semsau-visa$ /PERSISTENT:YES
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v AppsUseLightTheme /t REG_DWORD /d 0 /f
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -305,6 +321,7 @@ reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v App
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v Start_TrackDocs /t REG_DWORD /d 0 /f
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -313,6 +330,7 @@ reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v Star
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications /v GlobalUserDisabled /t REG_DWORD /d 1 /f
   
 ```
+ [⬆️](#️⃣-contents)
 
 
 &nbsp;
@@ -330,6 +348,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 * <https://chocolatey.org/install>
 * <https://youtu.be/SaXqT1fm6Js>
 
+ [⬆️](#️⃣-contents)
+
 &nbsp;
 
 #### 2B - Chocolatey Management
@@ -344,6 +364,7 @@ choco list
 choco install typora --version 0.9.75 -y
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -364,6 +385,7 @@ choco install -y ffmpeg
 choco install -y lightshot
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -384,6 +406,7 @@ choco install -y vcredist2013
 choco install -y vcredist140
   
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -397,6 +420,7 @@ choco install -y androidstudio
 choco install -y php
 
 ```
+ [⬆️](#️⃣-contents)
 
 
 &nbsp;
@@ -425,6 +449,8 @@ winget upgrade --all --accept-source-agreements
 * <https://winstall.app>
 * <https://winget.run>
 * <https://youtu.be/OYF0hWHAicc>
+
+ [⬆️](#️⃣-contents)
 
 #### 3B - Essential APPs in Winget
 ```shell
@@ -462,6 +488,7 @@ winget install --id=Valve.Steam -e --accept-package-agreements --accept-source-a
 winget install --id=WinSCP.WinSCP -e --accept-package-agreements --accept-source-agreements ;
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -480,6 +507,7 @@ winget install --id=Microsoft.VCRedist.2015+.x64 -e --accept-package-agreements 
 winget install --id=Oracle.JavaRuntimeEnvironment -e --accept-package-agreements --accept-source-agreements ;
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -494,6 +522,7 @@ winget install --id=ApacheFriends.Xampp.7.4 -e --accept-package-agreements --acc
 winget install --id=Notepad++.Notepad++ -e --accept-package-agreements --accept-source-agreements ;
 
 ```
+ [⬆️](#️⃣-contents)
 
 &nbsp;
 
@@ -504,4 +533,5 @@ winget install --id=Telegram.TelegramDesktop -e --accept-package-agreements --ac
 winget install --id=BeeBEEP.BeeBEEP -e --accept-package-agreements --accept-source-agreements ;
 
 ```
+ [⬆️](#️⃣-contents)
 
