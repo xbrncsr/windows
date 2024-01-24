@@ -23,7 +23,6 @@
 
 
 &nbsp;
-&nbsp;
 
 
 * [2 - Chocolatey](#2---chocolatey)
@@ -35,7 +34,6 @@
 
 
 &nbsp;
-&nbsp;
 
 
 * [3 - Winget](#3---winget)
@@ -46,7 +44,6 @@
 * [Chat Communication in Winget](#chat-communication-in-winget)
 
 
-&nbsp;
 &nbsp;
 
 
