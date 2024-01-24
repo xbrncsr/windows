@@ -1,54 +1,54 @@
 
 # Suporte
-
+## Contents
 * [1 - SCRIPTs](#1---script-dti-pma)
-* [Enable execution script in powershell](#enable-execution-script-powershell)
-* [Show computer name and users](#show-computer-name-and-users)
-* [Desable Power Manage](#desable-power-manage)
-* [creating restore point](#creating-restore-point)
-* [Add Credential](#add-credential)
-* [Enable Administrador user](#enable-administrador-user)
-* [Manage user](#manage-user)
-* [Rename Computer](#rename-computer)
-* [CHKDSK](#chkdsk)
-* [Defrag Windows](#defrag-windows)
-* [SFC / DISM](#sfc--dism)
-* [Update User Policy](#update-user-policy)
-* [Restart print spooler service](#restart-print-spooler-service)
-* [Refresh Interface Network](#refresh-interface-network)
-* [Network Folder Mapping](#network-folder-mapping)
-* [Enable Dark Theme](#enable-dark-theme)
-* [Turn Off Windows Activity History](#turn-off-windows-activity-history)
-* [Disable Background apps](#disable-background-apps)
+* [1A - Enable execution script in powershell](#1a---enable-execution-script-powershell)
+* [1B - Show computer name and users](#1b---show-computer-name-and-users)
+* [1C - Desable Power Manage](#1c---desable-power-manage)
+* [1D - creating restore point](#1d---creating-restore-point)
+* [1E - Add Credential](#1e---add-credential)
+* [1F - Enable Administrador user](#1f---enable-administrador-user)
+* [1G - Manage user](#1g---manage-user)
+* [1H - Rename Computer](#1h---rename-computer)
+* [1I - CHKDSK](#1i---chkdsk)
+* [1J - Defrag Windows](#1j---defrag-windows)
+* [1K - SFC / DISM](#1k---sfc--dism)
+* [1L - Update User Policy](#1l---update-user-policy)
+* [1M - Restart print spooler service](#1m---restart-print-spooler-service)
+* [1N - Refresh Interface Network](#1n---refresh-interface-network)
+* [1O - Network Folder Mapping](#1o---network-folder-mapping)
+* [1P - Enable Dark Theme](#1p---enable-dark-theme)
+* [1Q - Turn Off Windows Activity History](#1q---turn-off-windows-activity-history)
+* [1R - Disable Background apps](#1r---disable-background-apps)
 
 
 &nbsp;
 
 
 * [2 - Chocolatey](#2---chocolatey)
-* [Install Chocolatey](#install-chocolatey)
-* [Chocolatey Management](#chocolatey-management)
-* [Essential APPs in Chocolatey](#essential-apps-in-chocolatey)
-* [Runtimes in Chocolatey](#runtimes-in-chocolatey)
-* [Dev in Chocolatey](#dev-in-chocolatey)
+* [2A - Install Chocolatey](#2a---install-chocolatey)
+* [2B - Chocolatey Management](#2b---chocolatey-management)
+* [2C - Essential APPs in Chocolatey](#2c---essential-apps-in-chocolatey)
+* [2D - Runtimes in Chocolatey](#2d---runtimes-in-chocolatey)
+* [2E - Dev in Chocolatey](#2e---dev-in-chocolatey)
 
 
 &nbsp;
 
 
 * [3 - Winget](#3---winget)
-* [Winget Management](#winget-management)
-* [Essential APPs in Winget](#essential-apps-in-winget)
-* [Runtimes in Winget](#runtimes-in-winget)
-* [Dev in Winget](#dev-in-winget)
-* [Chat Communication in Winget](#chat-communication-in-winget)
+* [3A - Winget Management](#3a---winget-management)
+* [3B - Essential APPs in Winget](#3b---essential-apps-in-winget)
+* [3C - Runtimes in Winget](#3c---runtimes-in-winget)
+* [3D - Dev in Winget](#3d---dev-in-winget)
+* [3E - Chat Communication in Winget](#3e---chat-communication-in-winget)
 
 
 &nbsp;
 
 
 ## 1 - SCRIPTs
-#### Enable execution script PowerShell 
+#### 1A - Enable execution script PowerShell
 ```shell
 set-ExecutionPolicy unrestricted
 
@@ -59,13 +59,17 @@ irm https://raw.githubusercontent.com/cesarbrunoms/scripts/main/win/dti_pma.ps1 
   
 ```
 
-#### Show computer name and users
+&nbsp;
+
+#### 1B - Show computer name and users
 ```shell
 Get-CimInstance -ClassName Win32_Desktop
   
 ```
 
-#### Desable Power Manage 
+&nbsp;
+
+#### 1C - Desable Power Manage 
 ```shell
 powercfg.exe /SETACVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOIDLE 0
 powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOIDLE 0
@@ -76,7 +80,9 @@ powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_SLEEP HIBERNATEIDLE 0
 
 ```
 
-#### Creating restore point
+&nbsp;
+
+#### 1D - Creating restore point
 * Source:
 * <https://youtu.be/vi2lAsxo3Ws>
 
@@ -93,8 +99,9 @@ Register-ScheduledTask -Action $TaskAction -Trigger $Trigger -TaskName "MyRestor
 
 ```
 
+&nbsp;
 
-#### Add Credential 
+#### 1E - Add Credential 
 ```shell
 $username = "padrao"
 $password = "123456"
@@ -103,14 +110,18 @@ Invoke-Expression -Command $cmdkeyCommand
 
 ```
 
-#### Enable Administrador user
+&nbsp;
+
+#### 1F - Enable Administrador user
 ```shell
 Enable-LocalUser -Name "Administrador"
 Set-LocalUser -Name "Administrador" -Password (ConvertTo-SecureString -String "absemsau*" -AsPlainText -Force)
 
 ```
 
-#### Manage user
+&nbsp;
+
+#### 1G - Manage user
 ```shell
 # Removing user "user" from admin group and making it default user
 net localgroup administrators user /delete
@@ -122,7 +133,9 @@ net user user /passwordchg:no
 
 ```
 
-#### Rename Computer
+&nbsp;
+
+#### 1H - Rename Computer
 ```shell
 Write-Host "Rename Computer"
 $RENAME = Read-Host "escreva nome do computador"
@@ -131,26 +144,30 @@ Rename-Computer -NewName $RENAME
 
 ```
 
-#### CHKDSK
+&nbsp;
+
+#### 1I - CHKDSK
 ```shell
 chkdsk c: /r
 
 ```
 
-##### ou
+##### or
 ```shell
 Repair-Volume C -OfflineScanAndFix
 
 ```
 
-#### Defrag Windows
+&nbsp;
+
+#### 1J - Defrag Windows
 * Running DEFRAG HD
 ```shell
 defrag C: /v
 
 ```
 
-##### ou
+##### or
 ```shell
 Optimize-Volume -DriveLetter C -Defrag -TierOptimize -Verbose
 
@@ -162,7 +179,9 @@ Optimize-Volume -DriveLetter C -ReTrim -Verbose
   
 ```
 
-#### SFC / DISM
+&nbsp;
+
+#### 1K - SFC / DISM
 ```shell
 sfc /scannow
 
@@ -173,24 +192,28 @@ DISM /Online /Cleanup-image /Restorehealth
 
 ```
 
-##### ou
+##### or
 ```shell
 Repair-WindowsImage -Online -StartComponentCleanup -RestoreHealth
 
 ```
 
-#### Update User Policy
+&nbsp;
+
+#### 1L - Update User Policy
 ```shell
 gpupdate /force
 
 ```
-##### ou
+##### or
 ```shell
 Invoke-Expression -Command "gpupdate /force"
 
 ```
 
-#### Restart print spooler service
+&nbsp;
+
+#### 1M - Restart print spooler service
 ```shell
 # Stop print spooler service
 Stop-Service -Name Spooler -Force
@@ -206,7 +229,9 @@ Restart-Service -Name Spooler -Force
   
 ```
 
-#### Refresh Interface Network
+&nbsp;
+
+#### 1N - Refresh Interface Network
 ```shell
 #flushdns
 ipconfig /flushdns
@@ -231,7 +256,9 @@ NETSH interface set interface name=Ethernet admin=ENABLE
 
 ```
 
-#### Network Folder Mapping
+&nbsp;
+
+#### 1O - Network Folder Mapping
 ```shell
 #\\srv-storage-01\semsau
 net use \\srv-storage-01\semsau$ /PERSISTENT:YES
@@ -263,19 +290,25 @@ net use \\srv-storage-01\semsau-visa$ /PERSISTENT:YES
 
 ```
 
-#### Enable Dark Theme
+&nbsp;
+
+#### 1P - Enable Dark Theme
 ```shell
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v AppsUseLightTheme /t REG_DWORD /d 0 /f
   
 ```
 
-#### Turn Off Windows Activity History
+&nbsp;
+
+#### 1Q - Turn Off Windows Activity History
 ```shell
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v Start_TrackDocs /t REG_DWORD /d 0 /f
   
 ```
 
-#### Disable Background apps
+&nbsp;
+
+#### 1R - Disable Background apps
 ```shell
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications /v GlobalUserDisabled /t REG_DWORD /d 1 /f
   
@@ -287,7 +320,7 @@ reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplicati
 
 
 ## 2 - Chocolatey
-#### Install Chocolatey
+#### 2A - Install Chocolatey
 ```shell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   
@@ -297,7 +330,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 * <https://chocolatey.org/install>
 * <https://youtu.be/SaXqT1fm6Js>
 
-#### Chocolatey Management
+&nbsp;
+
+#### 2B - Chocolatey Management
 ```shell
 choco install -y vlc
 choco upgrade -y vlc
@@ -310,7 +345,9 @@ choco install typora --version 0.9.75 -y
   
 ```
 
-#### Essential APPs in Chocolatey
+&nbsp;
+
+#### 2C - Essential APPs in Chocolatey
 ```shell
 choco install -y 7zip
 choco install -y googlechrome
@@ -328,7 +365,9 @@ choco install -y lightshot
   
 ```
 
-#### Runtimes in Chocolatey
+&nbsp;
+
+#### 2D - Runtimes in Chocolatey
 ```shell
 choco install -y jre8
 choco install -y dotnetfx
@@ -346,7 +385,9 @@ choco install -y vcredist140
   
 ```
 
-#### Dev in Chocolatey
+&nbsp;
+
+#### 2E - Dev in Chocolatey
 ```shell
 choco install -y git
 choco install -y vscode
@@ -363,7 +404,7 @@ choco install -y php
 
 
 ## 3 - Winget
-#### Winget Management
+#### 3A - Winget Management
 ```shell
 winget install
 winget uninstall
@@ -385,7 +426,7 @@ winget upgrade --all --accept-source-agreements
 * <https://winget.run>
 * <https://youtu.be/OYF0hWHAicc>
 
-#### Essential APPs in Winget
+#### 3B - Essential APPs in Winget
 ```shell
 winget install --id=Microsoft.PowerShell -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.WindowsTerminal -e --accept-package-agreements --accept-source-agreements ;
@@ -422,7 +463,9 @@ winget install --id=WinSCP.WinSCP -e --accept-package-agreements --accept-source
 
 ```
 
-#### Runtimes in Winget
+&nbsp;
+
+#### 3C - Runtimes in Winget
 ```shell
 winget install --id=Microsoft.DotNet.Framework.DeveloperPack_4 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.DotNet.Runtime.5 -e --accept-package-agreements --accept-source-agreements ;
@@ -438,7 +481,9 @@ winget install --id=Oracle.JavaRuntimeEnvironment -e --accept-package-agreements
 
 ```
 
-#### Dev in Winget
+&nbsp;
+
+#### 3D - Dev in Winget
 ```shell
 winget install --id=Microsoft.VisualStudioCode -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VisualStudio.2022.Community -e --accept-package-agreements --accept-source-agreements ;
@@ -450,7 +495,9 @@ winget install --id=Notepad++.Notepad++ -e --accept-package-agreements --accept-
 
 ```
 
-#### Chat Communication in Winget
+&nbsp;
+
+#### 3E - Chat Communication in Winget
 ```shell
 winget install --id=Discord.Discord -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Telegram.TelegramDesktop -e --accept-package-agreements --accept-source-agreements ;
