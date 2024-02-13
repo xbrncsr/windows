@@ -12,6 +12,13 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
+
+# Manage Power
+irm https://raw.githubusercontent.com/xbrncsr/windows/main/manage_power/manage_power.ps1 | iex
+
+# Enable Admin User
+irm https://raw.githubusercontent.com/xbrncsr/windows/main/enable_admin_user/enable_admin_user.ps1 | iex
+
 # Install 7-Zip
 irm https://raw.githubusercontent.com/xbrncsr/windows/main/install_7zip/install_7zip.ps1 | iex
 
