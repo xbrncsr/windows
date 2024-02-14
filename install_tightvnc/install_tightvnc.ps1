@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install TightVNC
+Write-Host "=====================> [ Install TightVNC...! ]"
 winget install --id=GlavSoft.TightVNC -e --accept-package-agreements --accept-source-agreements ;

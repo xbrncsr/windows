@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install Firefox
+Write-Host "=====================> [ Install Firefox...! ]"
 winget install --id=Mozilla.Firefox -e --accept-package-agreements --accept-source-agreements ;

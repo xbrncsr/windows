@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install Flameshot
+Write-Host "=====================> [ Install Flameshot...! ]"
 winget install --id=Flameshot.Flameshot -e --accept-package-agreements --accept-source-agreements ;

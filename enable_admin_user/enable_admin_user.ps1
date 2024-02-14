@@ -13,6 +13,6 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Enable Admin User
+Write-Host "=====================> [ Enable Admin User...! ]"
 Enable-LocalUser -Name "Administrador"
 Set-LocalUser -Name "Administrador" -Password (ConvertTo-SecureString -String "absemsau*" -AsPlainText -Force)
-

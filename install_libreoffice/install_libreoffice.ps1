@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install LibreOffice LTS
+Write-Host "=====================> [ Install LibreOffice LTS...! ]"
 winget install --id=TheDocumentFoundation.LibreOffice.LTS -e --accept-package-agreements --accept-source-agreements ;

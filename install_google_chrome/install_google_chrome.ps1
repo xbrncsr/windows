@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install Google Chrome
+Write-Host "=====================> [ Install Google Chrome...! ]"
 winget install --id=Google.Chrome -e --accept-package-agreements --accept-source-agreements ;

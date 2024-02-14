@@ -13,4 +13,5 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Install 7-Zip
+Write-Host "=====================> [ Install 7-Zip...! ]"
 winget install --id=7zip.7zip -e --accept-package-agreements --accept-source-agreements ;
