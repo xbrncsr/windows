@@ -34,8 +34,8 @@ irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_g
 # Install LibreOffice LTS
 irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_libreoffice/install_libreoffice.ps1 | iex
 
-# Install Flameshot
-irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_flameshot/install_flameshot.ps1 | iex
+# Install Lightshot
+irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_lightshot/install_lightshot.ps1 | iex
 
 # Install VLC
 irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_vlc/install_vlc.ps1 | iex
