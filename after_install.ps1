@@ -42,3 +42,6 @@ irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_v
 
 # Install TightVNC
 irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_tightvnc/install_tightvnc.ps1 | iex
+
+# Install Adobe Acrobat Reader DC (64-bit)
+irm https://raw.githubusercontent.com/xbrncsr/windows/main/src/install/install_adobe_reader/install_adobe_reader.ps1 | iex
