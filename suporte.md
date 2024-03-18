@@ -495,14 +495,22 @@ winget install --id=WinSCP.WinSCP -e --accept-package-agreements --accept-source
 #### 3C - Runtimes in Winget
 ```shell
 winget install --id=Microsoft.DotNet.Framework.DeveloperPack_4 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.DotNet.Framework.DeveloperPack.4.5 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.DotNet.Runtime.5 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.DotNet.Runtime.6 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.DotNet.Runtime.7 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.DotNet.Runtime.8 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2005.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2005.x64 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2008.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2008.x64 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2010.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2010.x64 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2012.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2012.x64 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2013.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2013.x64 -e --accept-package-agreements --accept-source-agreements ;
+winget install --id=Microsoft.VCRedist.2015+.x86 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Microsoft.VCRedist.2015+.x64 -e --accept-package-agreements --accept-source-agreements ;
 winget install --id=Oracle.JavaRuntimeEnvironment -e --accept-package-agreements --accept-source-agreements ;
 
